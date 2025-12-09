@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sound Classification Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='resultstyle.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Classification Result</h1>
+
+        <div class="card">
+            <div class="result-info">
+                <p class="predicted-class">Predicted Class: <strong>{{ class_name }}</strong></p>
+                <p class="confidence">Confidence: {{ confidence }}%</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="section-title">Audio Playback</h2>
+            <audio controls>
+                <source src="data:audio/wav;base64,{{ audio_base64 }}" type="audio/wav">
+                Your browser does not support the audio element.
+            </audio>
+        </div>
+
+        <div class="card">
+            <h2 class="section-title">Waveform and Mel-spectrogram</h2>
+            {% if image_base64 %}
+                <img src="data:image/png;base64,{{ image_base64 }}" alt="Waveform and Mel-spectrogram">
+            {% else %}
+                <p>No visual available for the predicted neutral class.</p>
+            {% endif %}
+        </div>
+
+        <div class="card">
+            <h2 class="section-title">Percentage Distribution</h2>
+            <table>
+                <tr>
+                    <th>Class</th>
+                    <th>Percentage</th>
+                </tr>
+                {% for class, percentage in percentage_distribution.items() %}
+                <tr>
+                    <td>{{ class }}</td>
+                    <td>{{ percentage }}%</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div class="back-button">
+            <a href="{{ url_for('index') }}">
+                <button>Upload New Audio</button>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
